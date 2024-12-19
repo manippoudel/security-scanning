@@ -13,25 +13,21 @@ jobs:
     name: OWASP ZAP Scan and Publish Report
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Preload OWASP ZAP Docker Image
-        run: docker pull owasp/zap2docker
-
-      - name: Set Directory Permissions
-        run: chmod -R 777 /zap/wrk
+        uses: actions/checkout@v4
 
       - name: Run OWASP ZAP Scan
-        uses: zaproxy/action-baseline@v0.3.0
+        uses: zaproxy/action-baseline@v0.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://latticenepal.com'
           cmd_options: '-a -r /zap/wrk/report.html -J /zap/wrk/report.json -w /zap/wrk/report.md'
 
+
       - name: List Generated Files
         run: ls -l /zap/wrk
-
+        
       - name: Upload Report to GitHub Pages Artifact
+        if: ${{ success() }}
         uses: actions/upload-pages-artifact@v1
         with:
           path: /zap/wrk/report.html

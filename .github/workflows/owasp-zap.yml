@@ -1,0 +1,38 @@
+name: ZAP Scan and Publish Report
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on push to the main branch
+  workflow_dispatch:  # Trigger workflow manually
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: OWASP ZAP Scan and Publish Report
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run OWASP ZAP Scan
+        uses: zaproxy/action-baseline@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'https://latticenepal.com'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a -r /zap/wrk/report.html'
+
+      - name: Upload Report to GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: /zap/wrk/report.html
+
+  deploy:
+    needs: zap_scan
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write  # Grant permissions to deploy pages
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2

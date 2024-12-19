@@ -3,7 +3,8 @@ name: ZAP Scan and Publish Report
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to the main branch
+      - main  
+      - master
   workflow_dispatch:  # Trigger workflow manually
 
 jobs:

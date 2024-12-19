@@ -13,17 +13,13 @@ jobs:
     name: OWASP ZAP Scan and Publish Report
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Preload OWASP ZAP Docker Image
-        run: docker pull owasp/zap2docker
+        uses: actions/checkout@v4
 
       - name: Run OWASP ZAP Scan
         uses: zaproxy/action-baseline@v0.3.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://latticenepal.com'
-          rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a -r /zap/wrk/report.html'
 
       - name: Check for Missing Rules File

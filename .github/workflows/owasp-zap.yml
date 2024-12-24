@@ -23,21 +23,21 @@ jobs:
         uses: zaproxy/action-baseline@v0.14.0
         with:
           target: 'https://latticenepal.com'  # Target web application
-          cmd_options: '-a -r zap_report.html' # Generate report as zap_report.html
+          cmd_options: '-a -r /zap/wrk/zap_report.html' # Corrected path for report
           allow_issue_writing: false          # Disable issue creation to avoid rate limits
 
       - name: Verify Report File
         run: |
-          if [ ! -f "zap_report.html" ]; then
-            echo "Error: zap_report.html not found!"
+          if [ ! -f "/zap/wrk/zap_report.html" ]; then
+            echo "Error: zap_report.html not found in the volume path!"
             exit 1
           fi
 
-      - name: List Files in Directory
-        run: ls -l
+      - name: List Files in Volume Path
+        run: ls -l /zap/wrk
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v3
         with:
           name: ZAP Report
-          path: zap_report.html
+          path: /zap/wrk/zap_report.html

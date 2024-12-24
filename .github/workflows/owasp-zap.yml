@@ -20,11 +20,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://latticenepal.com'
-          cmd_options: '-a -r /zap/wrk/report.html -J /zap/wrk/report.json -w /zap/wrk/report.md'
+          # cmd_options: '-a -r /zap/wrk/report.html -J /zap/wrk/report.json -w /zap/wrk/report.md'
+          cmd_options: '-a -r report.html'
+
 
 
       - name: List Generated Files
-        run: ls -l /zap/wrk
+        run: ls -la
         
       - name: Upload Report to GitHub Pages Artifact
         if: ${{ success() }}

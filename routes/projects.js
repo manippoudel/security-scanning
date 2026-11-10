@@ -30,9 +30,6 @@ router
     .route("/search_expense_db")
     .post(project.searchExpenseDb);
 
-router
-    .route("/serialize")
-    .post(project.serializeMe);
 
 
 module.exports = router;
